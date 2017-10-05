@@ -213,7 +213,7 @@ function BashRcBasePrompting {
 
     # PS1='${crow#*[},\#,\! ';
     PS1='\# ';
-    PS1+='${lsc[bpx_var=0,bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[${TI_RED_F}(${PIPESTATUS[*]},${lsc}) ${TI_SGR0}\]}% ';
+    PS1+='${lsc[bpx_var=0,bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[${TI_RED_F}\](${PIPESTATUS[*]},${lsc}) \[${TI_SGR0}\]}% ';
     PS2='${bpx_var[bpx_var+=1,0]}> ';
     PS3=;
     PS4='+($?) ${BASH_SOURCE:-$0}:$FUNCNAME:$LINENO:';
