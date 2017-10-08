@@ -59,8 +59,7 @@ function BashRcExtFzf {
 
 function BashRcExtBma {
     declare -gx BMARKS_INDEX_FILE=$XDG_VAR_HOME/lib/bmarks.txt;
-    # . "$XDG_DATA_HOME/"bash/bma.bash &&
-    . "$HOME/"src/bma/bma.bash &&
+    . "$XDG_DATA_HOME/"bash/bma.bash &&
         \__bma -i;
 };
 
