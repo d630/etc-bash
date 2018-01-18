@@ -6,26 +6,26 @@ function BashRcBaseAlias {
     shopt -s expand_aliases;
     \ProfileRcBaseAlias;
 
-    alias -- -=builtin\ cd\ --\ -;
-    alias array=declare\ -a;
-    alias builtins=compgen\ -b;
-    alias bye=logout;
-    alias dedup=bash-dedup-history;
-    alias functions=declare\ -f;
-    alias iarray=declare\ -ai;
-    alias integer=declare\ -i;
-    alias itable=declare\ -Ai;
-    alias j=jobs\ -l;
-    alias nameref=declare\ -n;
-    alias neustart='builtin cd;. .bash_logout;/usr/bin/sudo /bin/systemctl reboot';
-    alias prompt-default='\BashRcBasePrompting'
-    alias prompt-simple="PROMPT_COMMAND= PS1='\u@\h \w \$ ' PS2='> ' PS3= PS4='+ '";
-    alias r='pushd +1 1>/dev/null;popd';
-    alias rehash=hash\ -r;
-    alias rreload='builtin cd; /usr/bin/xrdb -merge .Xresources';
-    alias runter='builtin cd;. .bash_logout;/usr/bin/sudo /bin/systemctl poweroff';
-    alias table=declare\ -A;
-    alias urm='builtin cd .. && printf "cd -- %s\n" "$PWD" 1>&2 && /bin/rm -rfI "$OLDPWD"';
+    alias -- '-=builtin cd -- -';
+    alias 'array=declare -a';
+    alias 'builtins=compgen -b';
+    alias 'bye=logout';
+    alias 'dedup=bash-dedup-history';
+    alias 'functions=declare -f';
+    alias 'iarray=declare -ai';
+    alias 'integer=declare -i';
+    alias 'itable=declare -Ai';
+    alias 'j=jobs -l';
+    alias 'nameref=declare -n';
+    alias 'neustart=builtin cd;. .bash_logout;/usr/bin/sudo /bin/systemctl reboot';
+    alias 'prompt-default=\BashRcBasePrompting'
+    alias "prompt-simple=PROMPT_COMMAND= PS1='\u@\h \w \$ ' PS2='> ' PS3= PS4='+ '";
+    alias 'r=pushd +1 1>/dev/null;popd';
+    alias 'rehash=hash -r';
+    alias 'rreload=builtin cd; /usr/bin/xrdb -merge .Xresources';
+    alias 'runter=builtin cd;. .bash_logout;/usr/bin/sudo /bin/systemctl poweroff';
+    alias 'table=declare -A';
+    alias 'urm=builtin cd .. && printf "cd -- %s\n" "$PWD" 1>&2 && /bin/rm -rfI "$OLDPWD"';
 };
 
 function BashRcBaseBuiltin {
@@ -196,12 +196,15 @@ function BashRcBasePrompting {
         history -r;
 
         declare \
-            cwd=$(pwd $_Z_RESOLVE_SYMLINKS 2>/dev/null) \
-            stktop=$(dirs +1 2>/dev/null);
+            cwd \
+            stktop;
+
+        cwd=$(pwd $_Z_RESOLVE_SYMLINKS 2>/dev/null);
+        stktop=$(dirs +1 2>/dev/null);
 
         [[ $cwd == "${stktop/\~/$HOME}" || $cwd == "$OLDPWD" ]] || {
             pushd -n "$cwd" 1>/dev/null;
-            _z --add "$cwd" 2>/dev/null;
+            \_z --add "$cwd" 2>/dev/null;
         };
 
         # printf %b "$TI_ED"'\E[6n';
@@ -213,15 +216,14 @@ function BashRcBasePrompting {
 
     # PS1='${crow#*[},\#,\! ';
     PS1='\# ';
-    PS1+='${lsc[bpx_var=0,bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[${TI_RED_F}\](${PIPESTATUS[*]},${lsc}) \[${TI_SGR0}\]}% \[${TI_SGR0}\]';
-    PS2='${bpx_var[bpx_var+=1,0]}> ';
+    PS1+='${lsc[bpx_var=0, bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[${TI_RED_F}\](${PIPESTATUS[*]},${lsc}) \[${TI_SGR0}\]}% \[${TI_SGR0}\]';
+    PS2='${bpx_var[bpx_var+=1, 0]}> ';
     PS3=;
     PS4='+($?) ${BASH_SOURCE:-$0}:$FUNCNAME:$LINENO:';
 
     prompt_functions[0]=__prompt_command;
     PROMPT_COMMAND=\\__bpx_hook_prompt;
 
-#    bind 'C-j: "\C-x\C-x1\C-x\C-x2\C-x\C-x4\C-x\C-x5\C-x\C-x6"';
      bind 'C-j: "\C-x\C-x1"';
 };
 
@@ -230,4 +232,4 @@ function BashRcBaseTerminfo {
     /usr/bin/tabs -4;
 };
 
-# vim: set ts=4 sw=4 tw=0 et :
+# vim: set ft=sh :

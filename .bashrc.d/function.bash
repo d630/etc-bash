@@ -11,18 +11,11 @@ function lan-down {
 };
 
 function wlan-up {
-    sudo "$XDG_BIN_HOME/"network-device \w -c;
-};
-
-function wlan-down {
-    sudo "$XDG_BIN_HOME/"network-device \w -d;
-};
-
-function up
+    sudo "$XDG_BIN_HOME/"network-device \w -c; }; function wlan-down { sudo "$XDG_BIN_HOME/"network-device \w -d; }; function up
 if
     [[ -z ${1//[0-9]/} ]];
 then
-    typeset s;
+    declare s;
     printf -v s '%*s' ${1:-1} '';
     cd -- ${s// /..\/} &&
         printf 'cd %s %s\n' -- "$PWD" 1>&2;
@@ -54,7 +47,7 @@ else
 fi;
 
 function scd {
-    typeset dir;
+    declare dir;
     read -r _ dir < <(
         dirs -v |
         "$XDG_BIN_HOME/"menu fzf CD;
@@ -73,11 +66,11 @@ function scd {
 };
 
 function setenv {
-    typeset -gx "${1}=$2";
+    typeset -gx "$1=$2";
 };
 
 function setvar {
-    typeset -g "${1}=$2";
+    typeset -g "$1=$2";
 };
 
 function @ (($*));
@@ -120,13 +113,14 @@ case $1 in
         unset -v "$@";;
 esac;
 
-function glob () (
+function glob () {
+    declare IFS;
     IFS=;
     printf %s\\0 "$*";
-);
+};
 
 function ashift {
-    typeset -n ref=$1;
+    declare -n "ref=$1";
     ref=("${ref[@]:(${2})}");
 };
 
@@ -174,4 +168,4 @@ function w? [[ -w ${1?} ]];
 function x? [[ -x ${1?} ]];
 function z? [[ -z ${1?} ]];
 
-# vim: set ts=4 sw=4 tw=0 et :
+# vim: set ft=sh :

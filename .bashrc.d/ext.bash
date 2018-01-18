@@ -16,14 +16,17 @@ function BashRcExtLs {
 
 function BashRcExtZ {
     declare -gx \
-        _Z_DATA=$XDG_VAR_HOME/lib/z/z.data \
-        _Z_NO_PROMPT_COMMAND=1;
+        _Z_DATA \
+        _Z_NO_PROMPT_COMMAND;
+
+    _Z_DATA=$XDG_VAR_HOME/lib/z/z.data;
+    _Z_NO_PROMPT_COMMAND=1;
 
     . "$XDG_DATA_HOME/"bash/z.sh;
     unalias z;
 
     function z {
-        _z "$@" 2>&1;
+        \_z "$@" 2>&1;
         shift 1 1>/dev/null 2>&1;
         (($#)) &&
             printf 'cd -- %s\n' "$PWD" 1>&2;
@@ -48,9 +51,9 @@ function BashRcExtZ {
         fi;
     };
 
-    alias zl=z\ -l;
-    alias zr=z\ -r;
-    alias zt=z\ -t;
+    alias 'zl=z -l';
+    alias 'zr=z -r';
+    alias 'zt=z -t';
 };
 
 function BashRcExtFzf {
@@ -58,7 +61,9 @@ function BashRcExtFzf {
 };
 
 function BashRcExtBma {
-    declare -gx BMARKS_INDEX_FILE=$XDG_VAR_HOME/lib/bmarks.txt;
+    declare -gx BMARKS_INDEX_FILE;
+    BMARKS_INDEX_FILE=$XDG_VAR_HOME/lib/bmarks.txt;
+
     . "$XDG_DATA_HOME/"bash/bma.bash &&
         \__bma -i;
 };
@@ -67,4 +72,4 @@ function BashRcExtBpx {
     . "$XDG_DATA_HOME/"bash/bpx.bash;
 };
 
-# vim: set ts=4 sw=4 tw=0 et :
+# vim: set ft=sh :

@@ -30,4 +30,4 @@ shopt -q login_shell && {
     #clear_console -q;
 };
 
-# vim: set ts=4 sw=4 tw=0 et :
+# vim: set ft=sh :
