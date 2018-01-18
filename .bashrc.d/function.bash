@@ -11,7 +11,14 @@ function lan-down {
 };
 
 function wlan-up {
-    sudo "$XDG_BIN_HOME/"network-device \w -c; }; function wlan-down { sudo "$XDG_BIN_HOME/"network-device \w -d; }; function up
+    sudo "$XDG_BIN_HOME/"network-device \w -c;
+};
+
+function wlan-down {
+    sudo "$XDG_BIN_HOME/"network-device \w -d;
+};
+
+function up
 if
     [[ -z ${1//[0-9]/} ]];
 then
