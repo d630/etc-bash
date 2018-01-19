@@ -73,11 +73,11 @@ function scd {
 };
 
 function setenv {
-    typeset -gx "$1=$2";
+    declare -gx "$1=$2";
 };
 
 function setvar {
-    typeset -g "$1=$2";
+    declare -g "$1=$2";
 };
 
 function @ (($*));
