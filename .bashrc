@@ -47,7 +47,7 @@
 \BashRcBaseMisc;
 \BashRcExtBpx;
 \BashRcBasePrompting;
-\BashRcBaseBuiltin;
+#\BashRcBaseBuiltin;
 
 unalias -a;
 \BashRcBaseAlias;
