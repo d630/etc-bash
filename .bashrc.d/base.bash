@@ -137,14 +137,15 @@ function BashRcBaseHistory {
     HISTSIZE=-1;
     histchars=\!^\#
 
-    set -o histexpand;
-    set -o history;
-    shopt -s cmdhist;
-    shopt -s histappend;
-    shopt -s histverify;
-    shopt -u lithist;
-    shopt -s histreedit;
-    unset -v HISTTIMEFORMAT;
+	# shopt -u syslog_history;
+	set -o histexpand;
+	set -o history;
+	shopt -s cmdhist;
+	shopt -s histappend;
+	shopt -s histreedit;
+	shopt -s histverify;
+	shopt -u lithist;
+	unset -v HISTTIMEFORMAT;
 };
 
 function BashRcBaseJobcontrol {
@@ -181,7 +182,6 @@ function BashRcBaseMisc {
 	shopt -u localvar_inherit;
 	shopt -u localvar_unset;
 	shopt -u mailwarn;
-	shopt -u syslog_history;
 	shopt -u xpg_echo;
 	unset -v CDPATH;
 	unset -v CHILD_MAX;
