@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash;
 #
 # BashRcEnvBase.
 
@@ -43,16 +43,17 @@ function BashRcBaseBuiltin {
 };
 
 function BashRcBaseCompletion {
-    shopt -s complete_fullquote;
-    shopt -s direxpand;
-    shopt -s dirspell;
-    shopt -s force_fignore;
-    shopt -s hostcomplete;
-    shopt -s no_empty_cmd_completion;
-    shopt -s progcomp;
-    unset -v COMPREPLY;
-    unset -v FIGNORE;
-    unset -v HOSTFILE;
+	shopt -s complete_fullquote;
+	shopt -s direxpand;
+	shopt -s dirspell;
+	shopt -s force_fignore;
+	shopt -s hostcomplete;
+	shopt -s no_empty_cmd_completion;
+	shopt -s progcomp;
+	shopt -u progcomp_alias;
+	unset -v COMPREPLY;
+	unset -v FIGNORE;
+	unset -v HOSTFILE;
 
     complete -A alias alias unalias;
     complete -A arrayvar array iarray itable table;
@@ -156,34 +157,38 @@ function BashRcBaseJobcontrol {
 };
 
 function BashRcBaseMisc {
-    FUNCNEST=0;
-    TIMEFORMAT=$'\nreal\t%3lR\nuser\t%3lU\nsys\t%3lS';
+	FUNCNEST=0;
+	TIMEFORMAT=$'\nreal\t%3lR\nuser\t%3lU\nsys\t%3lS';
 
-    set +o ignoreeof;
-    set +o keyword;
-    set +o noclobber;
-    set +o physical;
-    set +o pipefail;
-    set -o hashall;
-    shopt -s autocd;
-    shopt -s cdable_vars;
-    shopt -s cdspell;
-    shopt -s checkhash;
-    shopt -s checkwinsize;
-    shopt -s inherit_errexit;
-    shopt -s interactive_comments;
-    shopt -s shift_verbose;
-    shopt -s sourcepath;
-    shopt -u execfail;
-    shopt -u gnu_errfmt;
-    shopt -u mailwarn;
-    shopt -u xpg_echo;
-    unset -v CDPATH;
-    unset -v CHILD_MAX;
-    unset -v COLUMNS;
-    unset -v EXECIGNORE;
-    unset -v IGNOREEOF;
-    unset -v TMOUT;
+	set +o ignoreeof;
+	set +o keyword;
+	set +o noclobber;
+	set +o physical;
+	set +o pipefail;
+	set -o hashall;
+	shopt -s assoc_expand_once;
+	shopt -s autocd;
+	shopt -s cdable_vars;
+	shopt -s cdspell;
+	shopt -s checkhash;
+	shopt -s checkwinsize;
+	shopt -s inherit_errexit;
+	shopt -s interactive_comments;
+	shopt -s shift_verbose;
+	shopt -s sourcepath;
+	shopt -u execfail;
+	shopt -u gnu_errfmt;
+	shopt -u localvar_inherit;
+	shopt -u localvar_unset;
+	shopt -u mailwarn;
+	shopt -u syslog_history;
+	shopt -u xpg_echo;
+	unset -v CDPATH;
+	unset -v CHILD_MAX;
+	unset -v COLUMNS;
+	unset -v EXECIGNORE;
+	unset -v IGNOREEOF;
+	unset -v TMOUT;
 };
 
 function BashRcBasePrompting {
