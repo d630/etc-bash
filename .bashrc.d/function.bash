@@ -119,6 +119,22 @@ function dequote {
     eval printf %s "$1" 2>/dev/null;
 };
 
+function defer {
+	((${#Defer[@]})) ||
+		trap '
+			[[ $FUNCNAME == "defer" ]] || {
+				for ((i = ${#Defer[@]} - 1; i > -1; i--));
+				do
+					eval "${Defer[i]}";
+				done;
+				unset -v Defer i;
+				trap - RETURN;
+			};
+		' RETURN;
+
+	Defer+=("$*");
+}
+
 function !=? [[ ${1?} != "${2?}" ]];
 function !=~? [[ ! ${1?} =~ "${2?}" ]];
 function +? [[ ${1?} > ${2?} ]];

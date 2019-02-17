@@ -1,4 +1,4 @@
-#!/usr/bin/env bash;
+#!/usr/bin/env bash
 #
 # BashRcEnvBase.
 
@@ -37,7 +37,7 @@ function BashRcBaseBuiltin {
     done;
 
     #mypid
-    for x in finfo print push setpgid strftime; do
+    for x in fdflags finfo print push setpgid strftime; do
         enable -f $x $x;
     done;
 };
