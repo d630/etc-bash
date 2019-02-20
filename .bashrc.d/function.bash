@@ -9,7 +9,7 @@ then
     declare s;
     printf -v s '%*s' ${1:-1} '';
     cd -- ${s// /..\/} &&
-        printf 'cd %s %s\n' -- "$PWD" 1>&2;
+        printf 'cd -- %s\n' "$PWD" 1>&2;
 else
     printf %s\\n 'Usage: up [ <INT> ]' 1>&2;
     return 1;
