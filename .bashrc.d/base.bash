@@ -55,56 +55,39 @@ function BashRcBaseCompletion {
 	unset -v FIGNORE;
 	unset -v HOSTFILE;
 
-    complete -A alias alias unalias;
-    complete -A arrayvar array iarray itable table;
-    complete -A binding bind;
-    complete -A builtin builtin;
-    complete -A command type;
-    complete -A directory pushd . source;
-    complete -A disabled enable;
-    complete -A enabled enable;
-    complete -A export export;
-    complete -A file . source;
-    complete -A helptopic help;
-    complete -A job -P \"% -S \" fg jobs disown;
-    complete -A variable readonly unset;
-    complete -A setopt set;
-    complete -A shopt shopt;
-    complete -A stopped -P \"% -S \" bg;
+    # complete -A alias alias unalias;
+    # complete -A arrayvar array iarray itable table;
+    # complete -A binding bind;
+    # complete -A builtin builtin;
+    # complete -A command command type which;
+    # complete -A directory pushd . source;
+    # complete -A disabled enable;
+    # complete -A enabled enable;
+    # complete -A export export;
+    # complete -A file . source;
+    # complete -A helptopic help;
+    # complete -A job -P \"% -S \" fg jobs disown;
+    # complete -A setopt set;
+    # complete -A shopt shopt;
+    # complete -A stopped -P \"% -S \" bg;
+    # complete -A user groups
+    # complete -A variable readonly unset;
 
-    . /etc/bash_completion.d/git-prompt;
 
-    # function
-    # group
-    # hostname
-    # keyword
-    # running
-    # service
-    # signal
-    # user
+    if
+            [[
+                    -r /usr/share/bash-completion/bash_completion &&
+                    -f /usr/share/bash-completion/bash_completion
+            ]]
+    then
+            . "/usr/share/bash-completion/bash_completion"
+    elif
+            [[ -r /etc/bash_completion && -f /etc/bash_completion ]]
+    then
+            . "/etc/bash_completion"
+    fi
 
-    # if
-    #         [[
-    #                 -r /usr/share/bash-completion/bash_completion &&
-    #                 -f /usr/share/bash-completion/bash_completion
-    #         ]]
-    # then
-    #         builtin source "/usr/share/bash-completion/bash_completion"
-    # elif
-    #         [[ -r /etc/bash_completion && -f /etc/bash_completion ]]
-    # then
-    #         builtin source "/etc/bash_completion"
-    # fi
-
-    # builtin shopt -s nullglob
-
-    # for i in "${XDG_DATA_HOME}/bash-completion/completions/"?*
-    # do
-    #         builtin source "$i"
-    # done
-
-    # builtin shopt -u nullglob
-    # builtin unset -v i
+    . "/etc/bash_completion.d/git-prompt";
 };
 
 function BashRcBaseEditing {
@@ -195,26 +178,27 @@ function BashRcBasePrompting {
     shopt -s promptvars;
     PROMPT_DIRTRIM=12;
 
-    function __prompt_command {
-        history -a;
-        history -c;
-        history -r;
+	function __prompt_command {
+		history -a;
+		history -c;
+		history -r;
 
-        declare \
-            cwd \
-            stktop;
+		declare cwd;
 
-        cwd=$(pwd $_Z_RESOLVE_SYMLINKS 2>/dev/null);
-        stktop=$(dirs +1 2>/dev/null);
+		cwd=$(pwd ${_Z_RESOLVE_SYMLINKS:+"$_Z_RESOLVE_SYMLINKS"} 2>/dev/null);
 
-        [[ $cwd == "${stktop/\~/$HOME}" || $cwd == "$OLDPWD" ]] || {
-            pushd -n "$cwd" 1>/dev/null;
-            \_z --add "$cwd" 2>/dev/null;
-        };
+		case $cwd in
+			($(dirs -l +1 2>/dev/null)|$OLDPWD)
+				return;
+		esac;
 
-        # printf %b "$TI_ED"'\E[6n';
-        # IFS=\; read -s -d R crow _;
-    };
+		printf '%s\n' "$cwd";
+		pushd -n "$cwd" 1>/dev/null;
+		\_z --add "$cwd" 2>/dev/null;
+
+		# printf %b "$TI_ED"'\E[6n';
+		# IFS=\; read -s -d R crow _;
+	};
 
     declare -g -i lsc;
     # declare -g crow;

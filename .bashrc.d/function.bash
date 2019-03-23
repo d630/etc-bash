@@ -8,8 +8,7 @@ if
 then
     declare s;
     printf -v s '%*s' ${1:-1} '';
-    cd -- ${s// /..\/} &&
-        printf 'cd -- %s\n' "$PWD" 1>&2;
+    builtin cd -- "${s// /..\/}";
 else
     printf %s\\n 'Usage: up [ <INT> ]' 1>&2;
     return 1;
@@ -30,8 +29,7 @@ if
     (($#));
 then
     /bin/mkdir -pv -- "$1" &&
-        builtin cd -- "$1" &&
-            printf 'cd -- %s\n' "$PWD" 1>&2;
+        builtin cd -- "$1";
 else
     printf '%s\n' 'Usage: mcd <dir>' 1>&2;
     return 1;
@@ -40,16 +38,14 @@ fi;
 function scd {
     declare dir;
     read -r _ dir < <(
-        dirs -v |
-        "$XDG_BIN_HOME/"menu fzf CD;
+        dirs -l -v |
+        "$XDG_BIN_HOME/"menu fzf cd;
     );
-    dir=$dir/\~/$HOME};
 
     if
         [[ -d $dir ]];
     then
-        builtin cd -- "$dir" &&
-            printf 'cd -- %s\n' "$PWD" 1>&2;
+        builtin cd -- "$dir";
     else
         printf %s\\n 'No dir has been chosen' 1>&2;
         return 1;

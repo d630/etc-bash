@@ -68,10 +68,10 @@ function command_not_found_handle () {
     if
         [[ -t 2 ]];
     then
-        printf "${TI_RED_F_BOLD}%s${TI_SGR0}\n" uups\! 1>&2;
+        printf "${TI_RED_F_BOLD}%s$TI_SGR0\n" uups\!;
     else
-        printf "%s\n" uups\! 1>&2;
-    fi;
+        printf "%s\n" uups\!;
+    fi 1>&2;
     return 127;
 };
 

@@ -19,41 +19,36 @@ function BashRcExtZ {
         _Z_DATA \
         _Z_NO_PROMPT_COMMAND;
 
+    declare -agx _Z_EXCLUDE_DIRS;
+
     _Z_DATA=$XDG_VAR_HOME/lib/z/z.data;
     _Z_NO_PROMPT_COMMAND=1;
+    _Z_EXCLUDE_DIRS=("$HOME");
 
     . "$XDG_DATA_HOME/"bash/z.sh;
-    unalias z;
+    # unalias z;
 
-    function z {
-        \_z "$@" 2>&1;
-        shift 1 1>/dev/null 2>&1;
-        (($#)) &&
-            printf 'cd -- %s\n' "$PWD" 1>&2;
-    };
+    # function z {
+    #     \_z "$@" 2>&1;
+    #     shift 1 1>/dev/null 2>&1;
+    #     (($#)) &&
+    #         printf 'cd -- %s\n' "$PWD" 1>&2;
+    # };
 
     function zcd {
         declare dir;
         read -r _ dir < <(
-            _z -${1:-l} 2>&1 |
+            \_z "${@:--l}" 2>&1 |
             /usr/bin/tac |
-            "$XDG_BIN_HOME/"menu fzf CD;
+            "$XDG_BIN_HOME/"menu fzf cd;
         );
 
-        if
-            [[ -d $dir ]];
-        then
-            builtin cd -- "$dir" &&
-                printf 'cd -- %s\n' "$PWD" 1>&2;
-        else
-            printf '%s\n' 'No dir has been chosen' 1>&2;
-            return 1;
-        fi;
+        [[ -d $dir ]] &&
+            builtin cd -- "$dir";
     };
 
-    alias 'zl=z -l';
-    alias 'zr=z -r';
-    alias 'zt=z -t';
+    alias 'zr=\_z -r';
+    alias 'zt=\_z -t';
 };
 
 function BashRcExtFzf {
