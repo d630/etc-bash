@@ -60,7 +60,7 @@ function BashRcBaseCompletion {
     # complete -A binding bind;
     # complete -A builtin builtin;
     # complete -A command command type which;
-    # complete -A directory pushd . source;
+    complete -A directory pushd . source cd;
     # complete -A disabled enable;
     # complete -A enabled enable;
     # complete -A export export;
