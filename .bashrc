@@ -62,6 +62,8 @@ complete -r;
 \BashRcExtLs;
 \BashRcExtZ;
 \BashRcExtFzf;
+\BashRcExtPyenv;
+
 \BashRcExtBma;
 
 function command_not_found_handle () {

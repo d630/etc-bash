@@ -65,7 +65,13 @@ function BashRcExtBma {
 
 function BashRcExtBpx {
 	# declare -F __bpx_main > /dev/null || . "$XDG_DATA_HOME/"bash/bpx.bash;
-	declare -F __bpx_main > /dev/null || . /home/user1/src/bpx/bpx.bash;
+	declare -F __bpx_main > /dev/null ||
+		. /home/user1/src/bpx/bpx.bash;
 };
+
+function BashRcExtPyenv {
+	command -v pyenv 1>/dev/null 2>&1 &&
+		eval "$(pyenv init -)";
+}
 
 # vim: set ft=sh :
