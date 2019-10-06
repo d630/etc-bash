@@ -70,7 +70,7 @@ function command_not_found_handle () {
     if
         [[ -t 2 ]];
     then
-        printf "${TI_RED_F_BOLD}%s$TI_SGR0\n" uups\!;
+        printf "%suups!%s\n" "$TI_RED_F_BOLD" "$TI_SGR0";
     else
         printf "%s\n" uups\!;
     fi 1>&2;

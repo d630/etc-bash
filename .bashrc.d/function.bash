@@ -107,8 +107,9 @@ function glob () {
 };
 
 function ashift {
-    declare -n "ref=$1";
-    ref=("${ref[@]:(${2})}");
+    declare -n ref;
+    ref=$1;
+    ref=("${ref[@]:(${2:-0})}");
 };
 
 function dequote {

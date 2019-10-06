@@ -142,7 +142,7 @@ function BashRcBaseJobcontrol {
 
 function BashRcBaseMisc {
 	FUNCNEST=0;
-	TIMEFORMAT=$'\nreal\t%3lR\nuser\t%3lU\nsys\t%3lS';
+	TIMEFORMAT=$'\nreal\t%3lR\nuser\t%3lU\nsys \t%3lS';
 
 	set +o ignoreeof;
 	set +o keyword;
@@ -183,6 +183,7 @@ function BashRcBasePrompting {
 		history -c;
 		history -r;
 
+		declare -g -a runningj stoppedj;
 		mapfile -t runningj < <(jobs -pr);
 		mapfile -t stoppedj < <(jobs -ps);
 
@@ -204,12 +205,11 @@ function BashRcBasePrompting {
 	};
 
 	declare -g -i lsc;
-	declare -g -a runningj stoppedj;
 	# declare -g crow;
 
 	# PS1='${crow#*[},\#,\! ';
-	PS1='\# ${_[${#runningj[@]} + ${#stoppedj[@]} != 0 ? 0 : 1]:+\[${TI_YELLOW_F}${#runningj[@]}& ${#stoppedj[@]}z \[${TI_SGR0}\]}';
-	PS1+='${lsc[bpx_var=0, bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[${TI_RED_F}\](${PIPESTATUS[*]},${lsc}) \[${TI_SGR0}\]}% \[${TI_SGR0}\]';
+	PS1='\# ${_[${#runningj[@]} + ${#stoppedj[@]} != 0 ? 0 : 1]:+\[$TI_YELLOW_F\]${#runningj[@]}& ${#stoppedj[@]}z \[$TI_SGR0\]}';
+	PS1+='${lsc[bpx_var=0, bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[$TI_RED_F\](${PIPESTATUS[*]},$lsc) \[$TI_SGR0\]}% \[$TI_SGR0\]';
 	PS2='${bpx_var[bpx_var+=1, 0]}> ';
 	PS3=;
 	PS4='+($?) ${BASH_SOURCE:-$0}:$FUNCNAME:$LINENO:';
@@ -222,7 +222,7 @@ function BashRcBasePrompting {
 
 function BashRcBaseTerminfo {
 	/bin/stty -ixon -ctlecho;
-	/usr/bin/tabs -4;
+	/usr/bin/tabs -8;
 };
 
 # vim: set ft=sh :
