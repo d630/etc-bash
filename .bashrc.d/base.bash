@@ -24,21 +24,24 @@ function BashRcBaseAlias {
 	alias 'rehash=hash -r';
 	alias 'rreload=builtin cd; /usr/bin/xrdb -merge .Xresources';
 	alias 'runter=builtin cd;. .bash_logout;/usr/bin/sudo /bin/systemctl poweroff';
+	alias 'so={ ((!$?)); }'
 	alias 'table=declare -A';
-	alias 'urm=builtin cd .. && printf "cd -- %s\n" "$PWD" 1>&2 && /bin/rm -rfI "$OLDPWD"';
+	alias 'urm=builtin cd .. && echo "$PWD" 1>&2 && /bin/rm -rfI "$OLDPWD"';
 };
 
 function BashRcBaseBuiltin {
 	declare x;
 
-	for x in /usr/lib/bash "$HOME/"lib/bash; do
+	for x in /usr/lib/bash "$HOME/lib/bash";
+	do
 		[[ -d $x ]] &&
 			BASH_LOADABLES_PATH=$x${BASH_LOADABLES_PATH+:$BASH_LOADABLES_PATH};
 	done;
 
 	#mypid
-	for x in fdflags finfo print push setpgid strftime; do
-		enable -f $x $x;
+	for x in fdflags finfo print push setpgid strftime;
+	do
+		enable -f "$x" "$x";
 	done;
 };
 
@@ -75,17 +78,17 @@ function BashRcBaseCompletion {
 
 
 	if
-			[[
-					-r /usr/share/bash-completion/bash_completion &&
-					-f /usr/share/bash-completion/bash_completion
-			]]
+		[[
+			-r /usr/share/bash-completion/bash_completion &&
+			-f /usr/share/bash-completion/bash_completion
+		]];
 	then
-			. "/usr/share/bash-completion/bash_completion"
+		. "/usr/share/bash-completion/bash_completion";
 	elif
-			[[ -r /etc/bash_completion && -f /etc/bash_completion ]]
+		[[ -r /etc/bash_completion && -f /etc/bash_completion ]];
 	then
-			. "/etc/bash_completion"
-	fi
+		. "/etc/bash_completion";
+	fi;
 
 	. "/etc/bash_completion.d/git-prompt";
 };
@@ -118,7 +121,7 @@ function BashRcBaseHistory {
 	HISTFILESIZE=-1;
 	HISTIGNORE=;
 	HISTSIZE=-1;
-	histchars=\!^\#
+	histchars=\!^\#;
 
 	# shopt -u syslog_history;
 	set -o histexpand;
@@ -172,6 +175,17 @@ function BashRcBaseMisc {
 	unset -v EXECIGNORE;
 	unset -v IGNOREEOF;
 	unset -v TMOUT;
+
+	function command_not_found_handle () {
+		if
+			[[ -t 2 ]];
+		then
+			printf "%suups!%s\n" "$TI_RED_F_BOLD" "$TI_SGR0";
+		else
+			printf "%s\n" uups\!;
+		fi 1>&2;
+		return 127;
+	};
 };
 
 function BashRcBasePrompting {
@@ -187,27 +201,16 @@ function BashRcBasePrompting {
 		mapfile -t runningj < <(jobs -pr);
 		mapfile -t stoppedj < <(jobs -ps);
 
-		declare cwd;
+		[[ "$PWD" == "$OLDPWD" || ~1 == "$OLDPWD" ]] &&
+			return;
 
-		cwd=$(pwd ${_Z_RESOLVE_SYMLINKS:+"$_Z_RESOLVE_SYMLINKS"} 2>/dev/null);
-
-		case $cwd in
-			($(dirs -l +1 2>/dev/null)|$OLDPWD)
-				return;
-		esac;
-
-		printf '%s\n' "$cwd";
-		pushd -n "$cwd" 1>/dev/null;
-		\_z --add "$cwd" 2>/dev/null;
-
-		# printf %b "$TI_ED"'\E[6n';
-		# IFS=\; read -s -d R crow _;
+		printf '%s\n' "$PWD";
+		pushd -n "$OLDPWD" 1>/dev/null 2>&1;
+		\_z --add "$PWD" 2>/dev/null;
 	};
 
 	declare -g -i lsc;
-	# declare -g crow;
 
-	# PS1='${crow#*[},\#,\! ';
 	PS1='\# ${_[${#runningj[@]} + ${#stoppedj[@]} != 0 ? 0 : 1]:+\[$TI_YELLOW_F\]${#runningj[@]}& ${#stoppedj[@]}z \[$TI_SGR0\]}';
 	PS1+='${lsc[bpx_var=0, bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[$TI_RED_F\](${PIPESTATUS[*]},$lsc) \[$TI_SGR0\]}% \[$TI_SGR0\]';
 	PS2='${bpx_var[bpx_var+=1, 0]}> ';
@@ -217,7 +220,7 @@ function BashRcBasePrompting {
 	prompt_functions[0]=__prompt_command;
 	PROMPT_COMMAND=\\__bpx_hook_prompt;
 
-	 bind 'C-j: "\C-x\C-x1"';
+	bind 'C-j: "\C-x\C-x1"';
 };
 
 function BashRcBaseTerminfo {

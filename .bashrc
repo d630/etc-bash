@@ -28,18 +28,18 @@
 #shopt -s extdebug
 
 [[ $- == *i* ]] ||
-    return 1;
+	return 1;
 
 [[ -z ${debian_chroot:-} && -r /etc/debian_chroot ]] &&
-    debian_chroot=$(< /etc/debian_chroot);
+	debian_chroot=$(< /etc/debian_chroot);
 
-. "$HOME/".profile.d/ext.sh;
-. "$HOME/".profile.d/base.sh;
-. "$HOME/".profile.d/run.sh;
+. "$HOME/.profile.d/ext.sh";
+. "$HOME/.profile.d/base.sh";
+. "$HOME/.profile.d/run.sh";
 
-. "$HOME/".bashrc.d/ext.bash;
+. "$HOME/.bashrc.d/ext.bash";
 
-. "$HOME/".bashrc.d/base.bash;
+. "$HOME/.bashrc.d/base.bash";
 \BashRcBaseEditing;
 \BashRcBaseJobcontrol;
 \BashRcBaseTerminfo;
@@ -55,7 +55,7 @@ unalias -a;
 complete -r;
 \BashRcBaseCompletion;
 
-. "$HOME/".bashrc.d/function.bash;
+. "$HOME/.bashrc.d/function.bash";
 
 \BashRcExtKeychain;
 \BashRcExtGpg;
@@ -65,17 +65,6 @@ complete -r;
 \BashRcExtPyenv;
 
 \BashRcExtBma;
-
-function command_not_found_handle () {
-    if
-        [[ -t 2 ]];
-    then
-        printf "%suups!%s\n" "$TI_RED_F_BOLD" "$TI_SGR0";
-    else
-        printf "%s\n" uups\!;
-    fi 1>&2;
-    return 127;
-};
 
 \BashRcBaseHistory;
 

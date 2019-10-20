@@ -4,122 +4,123 @@
 
 function up
 if
-    [[ -z ${1//[0-9]/} ]];
+	[[ -z ${1//[0-9]/} ]];
 then
-    declare s;
-    printf -v s '%*s' ${1:-1} '';
-    builtin cd -- "${s// /..\/}";
+	declare s;
+	printf -v s '%*s' "${1:-1}" '';
+	builtin cd "${s// /..\/}";
 else
-    printf %s\\n 'Usage: up [ <INT> ]' 1>&2;
-    return 1;
+	echo 'Usage: up [ <INT> ]' 1>&2;
+	return 1;
 fi;
 
 function sup
 if
-    [[ -z ${1//[0-9]/} ]];
+	[[ -z ${1//[0-9]/} ]];
 then
-    pushd +"${1:-2}";
+	pushd "+${1:-2}";
 else
-    printf %s\\n 'Usage: sup [ <INT> ]' 1>&2;
-    return 1;
+	echo 'Usage: sup [ <INT> ]' 1>&2;
+	return 1;
 fi;
 
 function mcd
 if
-    (($#));
+	(($#));
 then
-    /bin/mkdir -pv -- "$1" &&
-        builtin cd -- "$1";
+	/bin/mkdir -pv -- "$1" &&
+		builtin cd -- "$1";
 else
-    printf '%s\n' 'Usage: mcd <dir>' 1>&2;
-    return 1;
+	echo 'Usage: mcd <dir>' 1>&2;
+	return 1;
 fi;
 
 function scd {
-    declare dir;
-    read -r _ dir < <(
-        dirs -l -v |
-        "$XDG_BIN_HOME/"menu fzf cd;
-    );
+	declare dir;
+	read -r _ dir < <(
+		dirs -l -v |
+		"$XDG_BIN_HOME/menu" fzf cd;
+	);
 
-    if
-        [[ -d $dir ]];
-    then
-        builtin cd -- "$dir";
-    else
-        printf %s\\n 'No dir has been chosen' 1>&2;
-        return 1;
-    fi;
+	if
+		[[ -d $dir ]];
+	then
+		builtin cd -- "$dir";
+	else
+		echo 'No dir has been chosen' 1>&2;
+		return 1;
+	fi;
 };
 
 function setenv {
-    declare -gx "$1=$2";
+	declare -gx "$1=$2";
 };
 
 function setvar {
-    declare -g "$1=$2";
+	declare -g "$1=$2";
 };
 
 function @ (($*));
 
 function defn
 case $1 in
-    (?*\[[@\*]\]*)
-        eval "${1//\[[@\*]\]/}"'=("${@:2}")';;
-    (?*)
-        eval "${1//\[[@\*]\]/}"'="${*:2}"';;
-    (*)
-        ! :;;
+	(?*\[[@\*]\]*)
+		eval "${1//\[[@\*]\]/}"'=("${@:2}")';;
+	(?*)
+		eval "${1//\[[@\*]\]/}"'="${*:2}"';;
+	(*)
+		! :;;
 esac;
 
 function undefn
-for __; do
-    case $__ in
-        (?*\[[@\*]\]*)
-            eval "${__//\[[@\*]\]/}"'=()';;
-        (?*)
-            eval "${__/%/=}";;
-        (?*)
-            ! :;;
-    esac;
+for __ in "$@";
+do
+	case $__ in
+		(?*\[[@\*]\]*)
+			eval "${__//\[[@\*]\]/}"'=()';;
+		(?*)
+			eval "${__/%/=}";;
+		(*)
+			return 1;;
+	esac;
 done;
 
 function list {
-    printf "${2:-%b\n}" "${!1}";
+	printf "${2:-%b\n}" "${!1}";
 };
 
 function list! {
-    eval printf "${2:-%b\\\n}" '"${'"!${1%%[*}[@]"'}"';
+	eval printf "${2:-%b\\\n}" '"${'"!${1%%[*}[@]"'}"';
 };
 
 function san
 case $1 in
-    (\-[fn])
-        unset "$@";;
-    (*)
-        unset -v "$@";;
+	(-[fn])
+		unset "$@";;
+	(*)
+		unset -v "$@";;
 esac;
 
 function glob () {
-    declare IFS;
-    IFS=;
-    printf %s\\0 "$*";
+	declare IFS;
+	IFS=;
+	printf %s\\0 "$*";
 };
 
 function ashift {
-    declare -n ref;
-    ref=$1;
-    ref=("${ref[@]:(${2:-0})}");
+	declare -n ref;
+	ref=$1;
+	ref=("${ref[@]:(${2:-0})}");
 };
 
 function dequote {
-    eval printf %s "$1" 2>/dev/null;
+	eval printf %s "$1" 2>/dev/null;
 };
 
 function defer {
 	((${#Defer[@]})) ||
 		trap '
-			[[ $FUNCNAME == "defer" ]] || {
+			[[ $FUNCNAME == defer ]] || {
 				for ((i = ${#Defer[@]} - 1; i > -1; i--));
 				do
 					eval "${Defer[i]}";
