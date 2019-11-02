@@ -62,6 +62,7 @@ function BashRcExtBpx {
 };
 
 function BashRcExtPyenv {
+	PATH=${PATH//"$PYENV_ROOT/shims:"};
 	command -v pyenv 1>/dev/null 2>&1 &&
 		eval "$(pyenv init -)";
 }
