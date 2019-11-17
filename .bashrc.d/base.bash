@@ -225,7 +225,7 @@ function BashRcBasePrompting {
 
 function BashRcBaseTerminfo {
 	/bin/stty -ixon -ctlecho;
-	/usr/bin/tabs -8;
+	/usr/bin/tabs -4;
 };
 
 # vim: set ft=sh :
