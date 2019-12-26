@@ -78,14 +78,11 @@ function BashRcBaseCompletion {
 
 
 	if
-		[[
-			-r /usr/share/bash-completion/bash_completion &&
-			-f /usr/share/bash-completion/bash_completion
-		]];
+		[[ -r /usr/share/bash-completion/bash_completion ]];
 	then
 		. "/usr/share/bash-completion/bash_completion";
 	elif
-		[[ -r /etc/bash_completion && -f /etc/bash_completion ]];
+		[[ -r /etc/bash_completion ]];
 	then
 		. "/etc/bash_completion";
 	fi;
