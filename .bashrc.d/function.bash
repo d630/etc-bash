@@ -7,7 +7,7 @@ if
 	[[ -z ${1//[0-9]/} ]];
 then
 	declare s;
-	printf -v s '%*s' "${1:-1}" '';
+	printf -v s "%${1:-1}s";
 	builtin cd "${s// /..\/}";
 else
 	echo 'Usage: up [ <INT> ]' 1>&2;
