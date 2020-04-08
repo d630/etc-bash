@@ -177,7 +177,8 @@ function BashRcBaseMisc {
 		if
 			[[ -t 2 ]];
 		then
-			printf "%suups!%s\n" "$TI_RED_F_BOLD" "$TI_SGR0";
+			# TI_RED_F_BOLD %s TI_SGR0
+			printf '\e[1m\e[31m%s\e[0m\n' uups\!;
 		else
 			printf "%s\n" uups\!;
 		fi 1>&2;
@@ -208,8 +209,8 @@ function BashRcBasePrompting {
 
 	declare -g -i lsc;
 
-	PS1='\# ${_[${#runningj[@]} + ${#stoppedj[@]} != 0 ? 0 : 1]:+\[$TI_YELLOW_F\]${#runningj[@]}& ${#stoppedj[@]}z \[$TI_SGR0\]}';
-	PS1+='${lsc[bpx_var=0, bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[$TI_RED_F\](${PIPESTATUS[*]},$lsc) \[$TI_SGR0\]}% \[$TI_SGR0\]';
+	PS1='\# ${_[${#runningj[@]} + ${#stoppedj[@]} != 0 ? 0 : 1]:+\[\e[33m\]${#runningj[@]}& ${#stoppedj[@]}z \[\e[0m\]}';
+	PS1+='${lsc[bpx_var=0, bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[\e[31m\](${PIPESTATUS[*]},$lsc) \[\e[0m\]}% \[\e[0m\]';
 	PS2='${bpx_var[bpx_var+=1, 0]}> ';
 	PS3=;
 	PS4='+($?) ${BASH_SOURCE:-$0}:$FUNCNAME:$LINENO:';
