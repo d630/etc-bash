@@ -52,6 +52,23 @@ function scd {
 	fi;
 };
 
+function fcd {
+	declare dir;
+	read -r _ dir < <(
+		HISTFILE=$HISTFILE "$XDG_BIN_HOME/bash-count-occurence" |
+		"$XDG_BIN_HOME/menu" fzf cd;
+	);
+
+	if
+		[[ -d $dir ]];
+	then
+		builtin cd -- "$dir";
+	else
+		echo 'No dir has been chosen' 1>&2;
+		return 1;
+	fi;
+}
+
 function setenv {
 	declare -gx "$1=$2";
 };
@@ -131,6 +148,62 @@ function defer {
 		' RETURN;
 
 	Defer+=("$*");
+}
+
+function debug_set_x
+case $1 in
+	('')
+		! :;;
+	(-)
+		set -x;;
+	(+)
+		set +x;
+		exec 4>&-;;
+	(*)
+		if
+			[[ -d ${1%/*} ]];
+		then
+			exec 4>>"$1";
+			BASH_XTRACEFD=4;
+			set -x;
+		fi;;
+esac;
+
+function toggle_options {
+	declare b o n;
+
+	while
+		read -r b o n _;
+	do
+		case $b$o in
+			(set+o) set -o "$n";;
+			(set-o) set +o "$n";;
+			(shopt-s) shopt -u "$n";;
+			(shopt-u) shopt -s "$n";;
+		esac;
+	done < <(
+		bold=$'\e[1m';
+		green=$'\e[32m';
+		red=$'\e[31m';
+		reset=$'\e[0m';
+
+		{
+			shopt -p;
+			shopt -op;
+		} |
+		sed "
+			/ -[so] / {
+				s/$/ ${bold}${green}enabled${reset}/;
+				b;
+			};
+			{
+				s/$/ ${bold}${red}disabled${reset}/;
+			};
+		" |
+		sort -k 3 |
+		column -t |
+		fzf --ansi --multi --with-nth=3.. --tiebreak=begin
+	);
 }
 
 function !=? [[ ${1?} != "${2?}" ]];
