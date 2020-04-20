@@ -52,23 +52,6 @@ function scd {
 	fi;
 };
 
-function fcd {
-	declare dir;
-	read -r _ dir < <(
-		HISTFILE=$HISTFILE "$XDG_BIN_HOME/bash-count-occurence" |
-		"$XDG_BIN_HOME/menu" fzf cd;
-	);
-
-	if
-		[[ -d $dir ]];
-	then
-		builtin cd -- "$dir";
-	else
-		echo 'No dir has been chosen' 1>&2;
-		return 1;
-	fi;
-}
-
 function setenv {
 	declare -gx "$1=$2";
 };
