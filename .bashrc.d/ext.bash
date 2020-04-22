@@ -44,7 +44,7 @@ function BashRcExtZ {
 };
 
 function BashRcExtFzf {
-	. fzf-bind.bash;
+	. "$XDG_BIN_HOME/fzf-bind.bash";
 };
 
 function BashRcExtBma {
@@ -58,7 +58,7 @@ function BashRcExtBma {
 function BashRcExtBpx {
 	# declare -F __bpx_main > /dev/null || . "$XDG_DATA_HOME/"bash/bpx.bash;
 	declare -F __bpx_main > /dev/null ||
-		. /home/user1/src/bpx/bpx.bash;
+		. "$XDG_SRC_HOME/bpx/bpx.bash";
 };
 
 function BashRcExtPyenv {

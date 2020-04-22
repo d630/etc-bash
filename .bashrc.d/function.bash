@@ -174,7 +174,7 @@ function toggle_options {
 			shopt -p;
 			shopt -op;
 		} |
-		sed "
+		/bin/sed "
 			/ -[so] / {
 				s/$/ ${bold}${green}enabled${reset}/;
 				b;
@@ -183,9 +183,10 @@ function toggle_options {
 				s/$/ ${bold}${red}disabled${reset}/;
 			};
 		" |
-		sort -k 3 |
-		column -t |
-		fzf --ansi --multi --with-nth=3.. --tiebreak=begin
+		/usr/bin/sort -k 3 |
+		/usr/bin/column -t |
+		/usr/bin/fzf --height 40% --ansi --multi --with-nth=3.. \
+			--tiebreak=begin --reverse;
 	);
 }
 
