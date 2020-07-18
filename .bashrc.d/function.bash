@@ -141,7 +141,8 @@ case $1 in
 		set -x;;
 	(+)
 		set +x;
-		exec 4>&-;;
+		exec 4>&-;
+		unset -v BASH_XTRACEFD;;
 	(*)
 		if
 			[[ -d ${1%/*} ]];
