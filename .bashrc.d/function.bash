@@ -144,13 +144,9 @@ case $1 in
 		exec 4>&-;
 		unset -v BASH_XTRACEFD;;
 	(*)
-		if
-			[[ -d ${1%/*} ]];
-		then
-			exec 4>>"$1";
-			BASH_XTRACEFD=4;
-			set -x;
-		fi;;
+		exec 4>>"$1";
+		BASH_XTRACEFD=4;
+		set -x;;
 esac;
 
 function toggle_options {
