@@ -209,7 +209,7 @@ function BashRcBasePrompting {
 
 	declare -g -i lsc;
 
-	PS1='\# ${_[${#runningj[@]} + ${#stoppedj[@]} != 0 ? 0 : 1]:+\[\e[33m\]${#runningj[@]}& ${#stoppedj[@]}z \[\e[0m\]}';
+	PS1='\# $SHLVL ${_[${#runningj[@]} + ${#stoppedj[@]} != 0 ? 0 : 1]:+\[\e[33m\]${#runningj[@]}& ${#stoppedj[@]}z \[\e[0m\]}';
 	PS1+='${lsc[bpx_var=0, bpx_var[2]=0, $? ? lsc=$?,0 : 1]:+\[\e[31m\](${PIPESTATUS[*]},$lsc) \[\e[0m\]}% \[\e[0m\]';
 	PS2='${bpx_var[bpx_var+=1, 0]}> ';
 	PS3=;
