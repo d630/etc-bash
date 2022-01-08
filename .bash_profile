@@ -6,12 +6,12 @@
 # after /etc/profile.
 
 [[ -r $HOME/.bash_login ]] &&
-	. "$HOME/.bash_login";
+    . "$HOME/.bash_login"
 
 [[ -r $HOME/.bashrc ]] &&
-	. "$HOME/.bashrc";
+    . "$HOME/.bashrc"
 
-export BASH_ENV;
-BASH_ENV=.bashenv;
+export BASH_ENV
+BASH_ENV=.bashenv
 
 # vim: set ft=sh :

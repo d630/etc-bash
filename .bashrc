@@ -28,44 +28,44 @@
 #shopt -s extdebug
 
 [[ $- == *i* ]] ||
-	return 1;
+    return 1
 
 [[ -z ${debian_chroot:-} && -r /etc/debian_chroot ]] &&
-	debian_chroot=$(< /etc/debian_chroot);
+    debian_chroot=$(</etc/debian_chroot)
 
-. "$HOME/.profile.d/ext.sh";
-. "$HOME/.profile.d/base.sh";
-. "$HOME/.profile.d/run.sh";
+. "$HOME/.profile.d/ext.sh"
+. "$HOME/.profile.d/base.sh"
+. "$HOME/.profile.d/run.sh"
 
-. "$HOME/.bashrc.d/ext.bash";
+. "$HOME/.bashrc.d/ext.bash"
 
-. "$HOME/.bashrc.d/base.bash";
-\BashRcBaseEditing;
-\BashRcBaseJobcontrol;
-\BashRcBaseTerminfo;
-\BashRcBaseExpansion;
-\BashRcBaseMisc;
-\BashRcExtBpx;
-\BashRcBasePrompting;
+. "$HOME/.bashrc.d/base.bash"
+\BashRcBaseEditing
+\BashRcBaseJobcontrol
+\BashRcBaseTerminfo
+\BashRcBaseExpansion
+\BashRcBaseMisc
+\BashRcExtBpx
+\BashRcBasePrompting
 #\BashRcBaseBuiltin;
 
-unalias -a;
-\BashRcBaseAlias;
+unalias -a
+\BashRcBaseAlias
 
-complete -r;
-\BashRcBaseCompletion;
+complete -r
+\BashRcBaseCompletion
 
-. "$HOME/.bashrc.d/function.bash";
+. "$HOME/.bashrc.d/function.bash"
 
-\BashRcExtKeychain;
-\BashRcExtGpg;
-\BashRcExtLs;
-\BashRcExtZ;
-\BashRcExtFzf;
-\BashRcExtPyenv;
+\BashRcExtKeychain
+\BashRcExtGpg
+\BashRcExtLs
+\BashRcExtZ
+\BashRcExtFzf
+\BashRcExtPyenv
 
-\BashRcExtBma;
+\BashRcExtBma
 
-\BashRcBaseHistory;
+\BashRcBaseHistory
 
 # vim: set ft=sh :

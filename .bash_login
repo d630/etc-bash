@@ -4,7 +4,7 @@
 # Executed via .bash_profile
 
 shopt -q login_shell &&
-	[[ -r $HOME/.profile ]] &&
-		. "$HOME/.profile";
+    [[ -r $HOME/.profile ]] &&
+    . "$HOME/.profile"
 
 # vim: set ft=sh :
