@@ -7,7 +7,7 @@ BashRcExtKeychain() {
 }
 
 BashRcExtGpg() {
-    \ProfileRcRunGpg 1>/dev/null
+    \ProfileRcRunGpg >/dev/null
 }
 
 BashRcExtLs() {
@@ -62,9 +62,8 @@ BashRcExtBpx() {
 }
 
 BashRcExtPyenv() {
-    PATH=${PATH//"$PYENV_ROOT/shims:"/}
-    command -v pyenv 1>/dev/null 2>&1 &&
-        eval "$(exec -- pyenv init -)"
+    command -v pyenv >/dev/null 2>&1 &&
+        eval "$(exec -- pyenv init --path);$(exec -- pyenv init -)"
 }
 
 # vim: set ft=sh :
