@@ -63,7 +63,7 @@ BashRcExtBpx() {
 
 BashRcExtPyenv() {
     command -v pyenv >/dev/null 2>&1 &&
-        eval "$(exec -- pyenv init --path);$(exec -- pyenv init -)"
+        eval "$(command -- pyenv init --path; exec -- pyenv init -)"
 }
 
 # vim: set ft=sh :
